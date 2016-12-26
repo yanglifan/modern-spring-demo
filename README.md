@@ -28,3 +28,5 @@ Implementation-URL: http://projects.spring.io/spring-boot/spring-boot-
 We know that the value of `Main-Class` segment will be the entry class when execute `java -jar app.jar` command.
 
 `org.springframework.boot.loader.JarLauncher` locates in spring-boot-loader module of spring-boot-tools project 
+
+https://github.com/spring-projects/spring-boot/blob/master/spring-boot-tools/spring-boot-loader/src/main/java/org/springframework/boot/loader/JarLauncher.java
