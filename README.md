@@ -32,3 +32,19 @@ We know that the value of `Main-Class` segment will be the entry class when exec
 https://github.com/spring-projects/spring-boot/blob/master/spring-boot-tools/spring-boot-loader/src/main/java/org/springframework/boot/loader/JarLauncher.java
 
 `JarLauncher` just invokes the class which is specified by `Start-Class` in `MANIFEST.MF`.
+
+Chinese Reference: http://blog.csdn.net/hengyunabc/article/details/50120001
+
+```java
+private void initialize(Object[] sources) {
+	if (sources != null && sources.length > 0) {
+		this.sources.addAll(Arrays.asList(sources));
+	}
+	this.webEnvironment = deduceWebEnvironment();
+	setInitializers((Collection) getSpringFactoriesInstances(
+			ApplicationContextInitializer.class));
+	setListeners((Collection) getSpringFactoriesInstances(ApplicationListener.class));
+	this.mainApplicationClass = deduceMainApplicationClass();
+}
+```
+
