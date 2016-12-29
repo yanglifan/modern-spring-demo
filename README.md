@@ -1,7 +1,8 @@
 # Introduction
 This is a demo app to show features of Spring Boot.
 
-# How Spring Boot App startup?
+# How Spring Boot works
+## How Spring Boot App startup?
 
 In `META-INF/MANIFEST.MF` of the Spring Boot fat jar, we can see the following content:
 
@@ -48,3 +49,27 @@ private void initialize(Object[] sources) {
 }
 ```
 
+## How Spring Boot to start a web container?
+Spring Boot use `AnnotationConfigEmbeddedWebApplicationContext` as the default web application context. `AnnotationConfigEmbeddedWebApplicationContext` will create an embedded web container. By default, it will use `TomcatEmbeddedServletContainerFactory` to create an embedded Tomcat instance.
+
+```java
+// In the class EmbeddedWebApplicationContext
+protected EmbeddedServletContainerFactory getEmbeddedServletContainerFactory() {
+	// Use bean names so that we don't consider the hierarchy
+	String[] beanNames = getBeanFactory()
+			.getBeanNamesForType(EmbeddedServletContainerFactory.class);
+	if (beanNames.length == 0) {
+		throw new ApplicationContextException(
+				"Unable to start EmbeddedWebApplicationContext due to missing "
+						+ "EmbeddedServletContainerFactory bean.");
+	}
+	if (beanNames.length > 1) {
+		throw new ApplicationContextException(
+				"Unable to start EmbeddedWebApplicationContext due to multiple "
+						+ "EmbeddedServletContainerFactory beans : "
+						+ StringUtils.arrayToCommaDelimitedString(beanNames));
+	}
+	return getBeanFactory().getBean(beanNames[0],
+			EmbeddedServletContainerFactory.class);
+}
+```
