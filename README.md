@@ -28,7 +28,7 @@ Implementation-URL: http://projects.spring.io/spring-boot/spring-boot-
 
 We know that the value of `Main-Class` segment will be the entry class when execute `java -jar app.jar` command.
 
-`org.springframework.boot.loader.JarLauncher` locates in spring-boot-loader module of spring-boot-tools project 
+`org.springframework.boot.loader.JarLauncher` locates in spring-boot-loader module of spring-boot-tools project
 
 https://github.com/spring-projects/spring-boot/blob/master/spring-boot-tools/spring-boot-loader/src/main/java/org/springframework/boot/loader/JarLauncher.java
 
@@ -71,5 +71,24 @@ protected EmbeddedServletContainerFactory getEmbeddedServletContainerFactory() {
 	}
 	return getBeanFactory().getBean(beanNames[0],
 			EmbeddedServletContainerFactory.class);
+}
+```
+
+There is a question. Why Spring Boot chooses Tomcat by default. The answer is related with Spring Boot auto config mechenism. `spring-boot-autoconfigure` module is very important. You can find all 3rd party technologies' configuration which supported by Spring Boot officially. Of course, you can find Tomcat configuration in it:
+
+```java
+public class EmbeddedServletContainerAutoConfiguration {
+	/**
+	 * Nested configuration if Tomcat is being used.
+	 */
+	@Configuration
+	@ConditionalOnClass({ Servlet.class, Tomcat.class })
+	@ConditionalOnMissingBean(value = EmbeddedServletContainerFactory.class, search = SearchStrategy.CURRENT)
+	public static class EmbeddedTomcat {
+		@Bean
+		public TomcatEmbeddedServletContainerFactory tomcatEmbeddedServletContainerFactory() {
+			return new TomcatEmbeddedServletContainerFactory();
+		}
+	}
 }
 ```
