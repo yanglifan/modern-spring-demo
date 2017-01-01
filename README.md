@@ -34,6 +34,7 @@ https://github.com/spring-projects/spring-boot/blob/master/spring-boot-tools/spr
 
 `JarLauncher` just invokes the class which is specified by `Start-Class` in `MANIFEST.MF`. In this demo, `Start-Class` is `com.github.yanglifan.demo.springboot.SpringBootDemoApplication`. Like most of Spring Boot applications, in `main` method of `SpringBootDemoApplication`, `SpringApplication.run(SpringBootDemoApplication.class, args)` is invoked.
 
+### 1st important method of `SpringApplication`
 This first important method is `initialize(Object[] sources)`. This method is invoked by `SpringApplication` constructor.
 
 ```java
@@ -50,6 +51,8 @@ public class SpringApplication {
     }
 }
 ```
+
+This method will decide whether the current application is a web application or not.
 
 ## How Spring Boot to start a web container?
 Spring Boot use `AnnotationConfigEmbeddedWebApplicationContext` as the default web application context. `AnnotationConfigEmbeddedWebApplicationContext` will create an embedded web container. By default, it will use `TomcatEmbeddedServletContainerFactory` to create an embedded Tomcat instance.
