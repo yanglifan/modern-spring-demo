@@ -34,6 +34,8 @@ https://github.com/spring-projects/spring-boot/blob/master/spring-boot-tools/spr
 
 `JarLauncher` just invokes the class which is specified by `Start-Class` in `MANIFEST.MF`. In this demo, `Start-Class` is `com.github.yanglifan.demo.springboot.SpringBootDemoApplication`. Like most of Spring Boot applications, in `main` method of `SpringBootDemoApplication`, `SpringApplication.run(SpringBootDemoApplication.class, args)` is invoked.
 
+This first important method is `initialize(Object[] sources)`. This method is invoked by `SpringApplication` constructor.
+
 ```java
 public class SpringApplication {
     private void initialize(Object[] sources) {
