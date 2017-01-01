@@ -34,18 +34,18 @@ https://github.com/spring-projects/spring-boot/blob/master/spring-boot-tools/spr
 
 `JarLauncher` just invokes the class which is specified by `Start-Class` in `MANIFEST.MF`.
 
-Chinese Reference: http://blog.csdn.net/hengyunabc/article/details/50120001
-
 ```java
-private void initialize(Object[] sources) {
-	if (sources != null && sources.length > 0) {
-		this.sources.addAll(Arrays.asList(sources));
-	}
-	this.webEnvironment = deduceWebEnvironment();
-	setInitializers((Collection) getSpringFactoriesInstances(
-			ApplicationContextInitializer.class));
-	setListeners((Collection) getSpringFactoriesInstances(ApplicationListener.class));
-	this.mainApplicationClass = deduceMainApplicationClass();
+public class SpringApplication {
+    private void initialize(Object[] sources) {
+        if (sources != null && sources.length > 0) {
+            this.sources.addAll(Arrays.asList(sources));
+        }
+        this.webEnvironment = deduceWebEnvironment();
+        setInitializers((Collection) getSpringFactoriesInstances(
+                ApplicationContextInitializer.class));
+        setListeners((Collection) getSpringFactoriesInstances(ApplicationListener.class));
+        this.mainApplicationClass = deduceMainApplicationClass();
+    }
 }
 ```
 
@@ -53,24 +53,25 @@ private void initialize(Object[] sources) {
 Spring Boot use `AnnotationConfigEmbeddedWebApplicationContext` as the default web application context. `AnnotationConfigEmbeddedWebApplicationContext` will create an embedded web container. By default, it will use `TomcatEmbeddedServletContainerFactory` to create an embedded Tomcat instance.
 
 ```java
-// In the class EmbeddedWebApplicationContext
-protected EmbeddedServletContainerFactory getEmbeddedServletContainerFactory() {
-	// Use bean names so that we don't consider the hierarchy
-	String[] beanNames = getBeanFactory()
-			.getBeanNamesForType(EmbeddedServletContainerFactory.class);
-	if (beanNames.length == 0) {
-		throw new ApplicationContextException(
-				"Unable to start EmbeddedWebApplicationContext due to missing "
-						+ "EmbeddedServletContainerFactory bean.");
-	}
-	if (beanNames.length > 1) {
-		throw new ApplicationContextException(
-				"Unable to start EmbeddedWebApplicationContext due to multiple "
-						+ "EmbeddedServletContainerFactory beans : "
-						+ StringUtils.arrayToCommaDelimitedString(beanNames));
-	}
-	return getBeanFactory().getBean(beanNames[0],
-			EmbeddedServletContainerFactory.class);
+public class EmbeddedWebApplicationContext extends GenericWebApplicationContext {
+    protected EmbeddedServletContainerFactory getEmbeddedServletContainerFactory() {
+        // Use bean names so that we don't consider the hierarchy
+        String[] beanNames = getBeanFactory()
+                .getBeanNamesForType(EmbeddedServletContainerFactory.class);
+        if (beanNames.length == 0) {
+            throw new ApplicationContextException(
+                    "Unable to start EmbeddedWebApplicationContext due to missing "
+                            + "EmbeddedServletContainerFactory bean.");
+        }
+        if (beanNames.length > 1) {
+            throw new ApplicationContextException(
+                    "Unable to start EmbeddedWebApplicationContext due to multiple "
+                            + "EmbeddedServletContainerFactory beans : "
+                            + StringUtils.arrayToCommaDelimitedString(beanNames));
+        }
+        return getBeanFactory().getBean(beanNames[0],
+                EmbeddedServletContainerFactory.class);
+    }
 }
 ```
 
@@ -92,3 +93,6 @@ public class EmbeddedServletContainerAutoConfiguration {
 	}
 }
 ```
+# References
+* [Spring Boot启动流程详解](http://zhaox.github.io/java/2016/03/22/spring-boot-start-flow)
+* [spring boot应用启动原理分析](http://blog.csdn.net/hengyunabc/article/details/50120001)
