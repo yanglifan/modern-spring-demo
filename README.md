@@ -2,7 +2,7 @@
 This is a demo app to show features of Spring Boot.
 
 # How Spring Boot works
-## How Spring Boot App startup?
+## How Spring Boot Application startup?
 
 In `META-INF/MANIFEST.MF` of the Spring Boot fat jar, we can see the following content:
 
@@ -32,7 +32,7 @@ We know that the value of `Main-Class` segment will be the entry class when exec
 
 https://github.com/spring-projects/spring-boot/blob/master/spring-boot-tools/spring-boot-loader/src/main/java/org/springframework/boot/loader/JarLauncher.java
 
-`JarLauncher` just invokes the class which is specified by `Start-Class` in `MANIFEST.MF`.
+`JarLauncher` just invokes the class which is specified by `Start-Class` in `MANIFEST.MF`. In this demo, `Start-Class` is `com.github.yanglifan.demo.springboot.SpringBootDemoApplication`. Like most of Spring Boot applications, in `main` method of `SpringBootDemoApplication`, `SpringApplication.run(SpringBootDemoApplication.class, args)` is invoked.
 
 ```java
 public class SpringApplication {
