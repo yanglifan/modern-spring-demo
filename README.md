@@ -80,6 +80,8 @@ public class SpringApplication {
 
 This method will be invoked by `SpringApplication.run(String... args)`.
 
+After `SpringApplication` to create an `ApplicationContext`, the process will like another Spring applications. Then I will introduce the internal process of `AnnotationConfigEmbeddedWebApplicationContext`.
+
 ## How Spring Boot to start a web container?
 Spring Boot use `AnnotationConfigEmbeddedWebApplicationContext` as the default web application context. `AnnotationConfigEmbeddedWebApplicationContext` will create an embedded web container. By default, it will use `TomcatEmbeddedServletContainerFactory` to create an embedded Tomcat instance.
 
