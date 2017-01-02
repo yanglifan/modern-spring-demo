@@ -35,7 +35,7 @@ https://github.com/spring-projects/spring-boot/blob/master/spring-boot-tools/spr
 `JarLauncher` just invokes the class which is specified by `Start-Class` in `MANIFEST.MF`. In this demo, `Start-Class` is `com.github.yanglifan.demo.springboot.SpringBootDemoApplication`. Like most of Spring Boot applications, in `main` method of `SpringBootDemoApplication`, `SpringApplication.run(SpringBootDemoApplication.class, args)` is invoked.
 
 ### 1st important method of `SpringApplication`
-This first important method is `initialize(Object[] sources)`. This method is invoked by `SpringApplication` constructor.
+The first important method is `initialize(Object[] sources)`. This method is invoked by `SpringApplication` constructor.
 
 ```java
 public class SpringApplication {
@@ -53,6 +53,30 @@ public class SpringApplication {
 ```
 
 This method will decide whether the current application is a web application or not.
+
+### 2nd important method of `SpringApplication`
+The second important method of `SpringApplication` is `createApplicationContext()`. This method will be according to the variable `webEnvironment` to decide to use which class to create the ApplicationContext. If `webEnvironment` is true, this method will use `AnnotationConfigEmbeddedWebApplicationContext`:
+
+```java
+public class SpringApplication {
+    protected ConfigurableApplicationContext createApplicationContext() {
+    	Class<?> contextClass = this.applicationContextClass;
+    	if (contextClass == null) {
+    		try {
+    			contextClass = Class.forName(this.webEnvironment
+    					? DEFAULT_WEB_CONTEXT_CLASS : DEFAULT_CONTEXT_CLASS);
+    		}
+    		catch (ClassNotFoundException ex) {
+    			throw new IllegalStateException(
+    					"Unable create a default ApplicationContext, "
+    							+ "please specify an ApplicationContextClass",
+    					ex);
+    		}
+    	}
+    	return (ConfigurableApplicationContext) BeanUtils.instantiate(contextClass);
+    }
+}
+```
 
 ## How Spring Boot to start a web container?
 Spring Boot use `AnnotationConfigEmbeddedWebApplicationContext` as the default web application context. `AnnotationConfigEmbeddedWebApplicationContext` will create an embedded web container. By default, it will use `TomcatEmbeddedServletContainerFactory` to create an embedded Tomcat instance.
@@ -80,7 +104,7 @@ public class EmbeddedWebApplicationContext extends GenericWebApplicationContext 
 }
 ```
 
-There is a question. Why Spring Boot chooses Tomcat by default. The answer is related with Spring Boot auto config mechenism. `spring-boot-autoconfigure` module is very important. You can find all 3rd party technologies' configuration which supported by Spring Boot officially. Of course, you can find Tomcat configuration in it:
+There is a question. Why Spring Boot chooses Tomcat by default. The answer is related with Spring Boot auto config mechanism. `spring-boot-autoconfigure` module is very important. You can find all 3rd party technologies' configuration which supported by Spring Boot officially. Of course, you can find Tomcat configuration in it:
 
 ```java
 public class EmbeddedServletContainerAutoConfiguration {
