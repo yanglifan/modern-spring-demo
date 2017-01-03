@@ -108,7 +108,7 @@ public class EmbeddedWebApplicationContext extends GenericWebApplicationContext 
 }
 ```
 
-There is a question. Why Spring Boot chooses Tomcat by default. The answer is related with Spring Boot auto config mechanism. `spring-boot-autoconfigure` module is very important. You can find all 3rd party technologies' configuration which supported by Spring Boot officially. Of course, you can find Tomcat configuration in it:
+There is a question. Why Spring Boot chooses Tomcat by default. The answer is related with Spring Boot auto config mechanism. `spring-boot-autoconfigure` module is very important, it provides the auto config mechanism to Spring Boot. You can find all 3rd party technologies' configuration which supported by Spring Boot officially. Of course, you can find Tomcat configuration in it:
 
 ```java
 public class EmbeddedServletContainerAutoConfiguration {
@@ -126,6 +126,21 @@ public class EmbeddedServletContainerAutoConfiguration {
 	}
 }
 ```
+
+Annotations `@ConditionalOnClass` and `@ConditionalOnMissingBean` will make a magic. When the `ApplicationContext` startup, Spring will load classes with `@Configuration` and parse annotations like `@ConditionalOnClass` and `@ConditionalOnMissingBean`. If the condition is matched, then the corresponding configuration will be effective.
+
+```java
+@Order(Ordered.HIGHEST_PRECEDENCE)
+class OnClassCondition extends SpringBootCondition {
+
+	@Override
+	public ConditionOutcome getMatchOutcome(ConditionContext context,
+			AnnotatedTypeMetadata metadata) {
+	    // ...
+	}
+}
+```
+
 # References
 * [Spring Boot启动流程详解](http://zhaox.github.io/java/2016/03/22/spring-boot-start-flow)
 * [spring boot应用启动原理分析](http://blog.csdn.net/hengyunabc/article/details/50120001)
