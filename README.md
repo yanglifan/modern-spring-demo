@@ -143,6 +143,8 @@ class OnClassCondition extends SpringBootCondition {
 
 Since by default, `spring-boot-starter-web` module depends on `spring-boot-starter-tomcat` module, so embedded Tomcat classes is on the classpath by default. So Spring Boot will use Tomcat be default.
 
+Underlying, Spring uses Java byte code technology to read the annotation data into metadata objects. See `AnnotationMetadataReadingVisitor`.
+
 # References
 * [Spring Boot启动流程详解](http://zhaox.github.io/java/2016/03/22/spring-boot-start-flow)
 * [spring boot应用启动原理分析](http://blog.csdn.net/hengyunabc/article/details/50120001)
