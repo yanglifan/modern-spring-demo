@@ -145,6 +145,26 @@ Since by default, `spring-boot-starter-web` module depends on `spring-boot-start
 
 Underlying, Spring uses Java byte code technology to read the annotation data into metadata objects. See `AnnotationMetadataReadingVisitor`.
 
+### How `EmbeddedServletContainerAutoConfiguration` to be loaded?
+
+There is still a question. `EmbeddedServletContainerAutoConfiguration` defines the web container configuration. Then `AnnotationConfigEmbeddedWebApplicationContext` will use this bean definition. But how `EmbeddedServletContainerAutoConfiguration` to be loaded?
+ 
+`ApplicationContext.refresh() -> ApplicationContext.invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory) -> ConfigurationClassPostProcessor.processConfigBeanDefinitions(BeanDefinitionRegistry registry) -> ConfigurationClassParser.processDeferredImportSelectors()`
+
+`@EnableAutoConfiguration` imports `EnableAutoConfigurationImportSelector`. So `EnableAutoConfigurationImportSelector` will be invoked and it will use load more `Configuration` classes according to `spring.factories` file:
+
+```properties
+# Auto Configure
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+org.springframework.boot.autoconfigure.admin.SpringApplicationAdminJmxAutoConfiguration,\
+org.springframework.boot.autoconfigure.aop.AopAutoConfiguration,\
+org.springframework.boot.autoconfigure.web.EmbeddedServletContainerAutoConfiguration
+# ...
+```
+So `EmbeddedServletContainerAutoConfiguration` will be loaded. Then in `ApplicationContext.onRefresh()` method, the web container will be created.
+
+This also explains the function of `spring.factories` in Spring Boot. 
+
 # Web
 `@EnableWebMvc` is not necessary.
 
