@@ -148,10 +148,14 @@ Underlying, Spring uses Java byte code technology to read the annotation data in
 ### How `EmbeddedServletContainerAutoConfiguration` to be loaded?
 
 There is still a question. `EmbeddedServletContainerAutoConfiguration` defines the web container configuration. Then `AnnotationConfigEmbeddedWebApplicationContext` will use this bean definition. But how `EmbeddedServletContainerAutoConfiguration` to be loaded?
- 
+
+See the following call flow. When a Spring application starts, `ApplicationContext.refresh()` will be invoked. `refresh()` method is very important for understanding Spring application lifecycle.
+
 `ApplicationContext.refresh() -> ApplicationContext.invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory) -> ConfigurationClassPostProcessor.processConfigBeanDefinitions(BeanDefinitionRegistry registry) -> ConfigurationClassParser.processDeferredImportSelectors()`
 
-`@EnableAutoConfiguration` imports `EnableAutoConfigurationImportSelector`. So `EnableAutoConfigurationImportSelector` will be invoked and it will use load more `Configuration` classes according to `spring.factories` file:
+In this call flow, `ConfigurationClassPostProcessor` is one of `BeanPostProcessor`. Its function is to load other classes with `@Configuration`. In our demo, `SpingBootDemoApplication` is also a `Configuration` class. So after it create and refresh a Spring Application Context, this Spring Application Context will treat `SpingBootDemoApplication` as a Spring configuration class.
+
+`SpingBootDemoApplication` has `SpringBootApplication` annotation, `SpringBootApplication`  is also `@EnableAutoConfiguration`. And `@EnableAutoConfiguration` imports `EnableAutoConfigurationImportSelector`. So `EnableAutoConfigurationImportSelector` will be invoked and it will use load more `Configuration` classes according to `spring.factories` file:
 
 ```properties
 # Auto Configure
@@ -161,6 +165,21 @@ org.springframework.boot.autoconfigure.aop.AopAutoConfiguration,\
 org.springframework.boot.autoconfigure.web.EmbeddedServletContainerAutoConfiguration
 # ...
 ```
+
+```java
+class EnableAutoConfigurationImportSelector {
+    protected List<String> getCandidateConfigurations(AnnotationMetadata metadata,
+    		AnnotationAttributes attributes) {
+    	List<String> configurations = SpringFactoriesLoader.loadFactoryNames(
+    			getSpringFactoriesLoaderFactoryClass(), getBeanClassLoader());
+    	Assert.notEmpty(configurations,
+    			"No auto configuration classes found in META-INF/spring.factories. If you "
+    					+ "are using a custom packaging, make sure that file is correct.");
+    	return configurations;
+    }
+}
+```
+
 So `EmbeddedServletContainerAutoConfiguration` will be loaded. Then in `ApplicationContext.onRefresh()` method, the web container will be created.
 
 This also explains the function of `spring.factories` in Spring Boot. 
