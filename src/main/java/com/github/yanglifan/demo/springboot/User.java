@@ -2,12 +2,14 @@ package com.github.yanglifan.demo.springboot;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Table(name = "t_users")
 @Entity
 public class User {
 
     @Id
-    String username;
+    private String username;
 
     public User() {
     }
