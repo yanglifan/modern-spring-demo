@@ -1,4 +1,4 @@
-package com.github.yanglifan.demo.springboot.model;
+package com.github.yanglifan.demo.springboot;
 
 public class User {
     String username;

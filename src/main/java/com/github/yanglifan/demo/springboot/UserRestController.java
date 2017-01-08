@@ -1,6 +1,6 @@
-package com.github.yanglifan.demo.springboot.web;
+package com.github.yanglifan.demo.springboot;
 
-import com.github.yanglifan.demo.springboot.model.User;
+import com.github.yanglifan.demo.springboot.User;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
