@@ -187,6 +187,10 @@ This also explains the function of `spring.factories` in Spring Boot.
 # Web
 `@EnableWebMvc` is not necessary.
 
+# Database
+## H2 Embedded Memory Database
+If you add H2 database library into the classpath. Spring Boot will use H2 embedded database. And if you add spring-boot-devtools into the classpath, you can also use H2 web console. Open http://localhost:8080/h2-console, you can see it. By default, the jdbc url is `jdbc:h2:mem:testdb`. Username is sa, no password.
+
 # References
 * [Spring Boot启动流程详解](http://zhaox.github.io/java/2016/03/22/spring-boot-start-flow)
 * [spring boot应用启动原理分析](http://blog.csdn.net/hengyunabc/article/details/50120001)
