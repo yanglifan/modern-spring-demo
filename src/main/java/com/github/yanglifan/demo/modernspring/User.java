@@ -1,4 +1,4 @@
-package com.github.yanglifan.demo.springboot;
+package com.github.yanglifan.demo.modernspring;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

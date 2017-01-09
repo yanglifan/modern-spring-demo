@@ -1,4 +1,4 @@
-package com.github.yanglifan.demo.springboot;
+package com.github.yanglifan.demo.modernspring;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
