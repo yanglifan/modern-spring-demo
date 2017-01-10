@@ -11,13 +11,15 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 public class UserRestControllerTest {
-    public static final String USERNAME = "yanglifan";
+    private static final String USERNAME = "yanglifan";
+
     @Autowired
     private MockMvc mvc;
 
@@ -33,7 +35,8 @@ public class UserRestControllerTest {
     public void getByName() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/users/" + USERNAME)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.username").value(USERNAME));
     }
 
     @Test
