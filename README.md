@@ -194,3 +194,4 @@ If you add H2 database library into the classpath. Spring Boot will use H2 embed
 # References
 * [Spring Boot启动流程详解](http://zhaox.github.io/java/2016/03/22/spring-boot-start-flow)
 * [spring boot应用启动原理分析](http://blog.csdn.net/hengyunabc/article/details/50120001)
+* [Building an Application with Spring Boot](https://spring.io/guides/gs/spring-boot/)
