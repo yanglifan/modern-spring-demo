@@ -18,7 +18,7 @@ public class UserRestController {
 
     @RequestMapping(value = "/{username}", method = RequestMethod.GET)
     public User getByName(@PathVariable String username) {
-        return new User(username);
+        return userRepository.findOne(username);
     }
 
     @PostMapping
