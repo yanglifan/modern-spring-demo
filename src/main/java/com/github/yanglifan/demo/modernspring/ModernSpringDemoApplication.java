@@ -3,7 +3,9 @@ package com.github.yanglifan.demo.modernspring;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Bean;
+
+import java.util.Arrays;
 
 @SpringBootApplication
 public class ModernSpringDemoApplication {
@@ -12,18 +14,9 @@ public class ModernSpringDemoApplication {
         SpringApplication.run(ModernSpringDemoApplication.class, args);
     }
 
-    @Component
-    static class UserDatabaseInitializer implements CommandLineRunner {
-
-        private final UserRepository userRepository;
-
-        public UserDatabaseInitializer(UserRepository userRepository) {
-            this.userRepository = userRepository;
-        }
-
-        @Override
-        public void run(String... args) throws Exception {
-            userRepository.save(new User("tom"));
-        }
+    @Bean
+    CommandLineRunner initDatabase(UserRepository userRepository) {
+        return args ->
+                Arrays.asList("tom", "jerry").forEach(name -> userRepository.save(new User(name)));
     }
 }
