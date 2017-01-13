@@ -16,9 +16,9 @@ public class UserRestController {
         this.userRepository = userRepository;
     }
 
-    @RequestMapping(value = "/{username}", method = RequestMethod.GET)
-    public User getByName(@PathVariable String username) {
-        return userRepository.findOne(username);
+    @RequestMapping(value = "/{name}", method = RequestMethod.GET)
+    public User getByName(@PathVariable String name) {
+        return userRepository.findByName(name);
     }
 
     @PostMapping

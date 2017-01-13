@@ -1,5 +1,6 @@
 package com.github.yanglifan.demo.modernspring;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,7 +37,7 @@ public class UserRestControllerTest {
         mvc.perform(MockMvcRequestBuilders.get("/users/" + USERNAME)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.username").value(USERNAME));
+                .andExpect(jsonPath("$.name").value(USERNAME));
     }
 
     @Test
@@ -44,4 +45,8 @@ public class UserRestControllerTest {
 
     }
 
+    @After
+    public void tearDown() throws Exception {
+        userRepository.deleteAll();
+    }
 }

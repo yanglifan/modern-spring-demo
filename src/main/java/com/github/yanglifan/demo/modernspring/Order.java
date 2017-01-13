@@ -9,7 +9,16 @@ import javax.persistence.Table;
 public class Order {
     @Id
     private String code;
-    private Integer userId;
+
+    private Long userId;
+
+    private Order() {
+    }
+
+    public Order(String code, Long userId) {
+        this.code = code;
+        this.userId = userId;
+    }
 
     public String getCode() {
         return code;
@@ -19,11 +28,11 @@ public class Order {
         this.code = code;
     }
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 }

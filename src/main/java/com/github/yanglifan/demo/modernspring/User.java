@@ -1,6 +1,7 @@
 package com.github.yanglifan.demo.modernspring;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -9,20 +10,27 @@ import javax.persistence.Table;
 public class User {
 
     @Id
-    private String username;
+    @GeneratedValue
+    private Long id;
+
+    private String name;
 
     public User() {
     }
 
-    public User(String username) {
-        this.username = username;
+    public User(String name) {
+        this.name = name;
     }
 
-    public String getUsername() {
-        return username;
+    public Long getId() {
+        return id;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

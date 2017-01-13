@@ -201,6 +201,9 @@ public class Order {
 }
 ```
 
+## Notice when write UT
+When you write UT related with database operations, in general you will initialize the database in `setUp` method. But `setUp` method will run before every test case run. You must aware that. For example, when you save some data into the database in `setUp` method. And you have two test cases, then the data save operation will do twice. That may fail your UT, since your data is duplicated. You can clean your database in `tearDown` method.
+
 # Custom Banner
 http://www.network-science.de/ascii/
 

@@ -15,8 +15,14 @@ public class ModernSpringDemoApplication {
     }
 
     @Bean
-    CommandLineRunner initDatabase(UserRepository userRepository) {
-        return args ->
-                Arrays.asList("tom", "jerry").forEach(name -> userRepository.save(new User(name)));
+    CommandLineRunner initDatabase(UserRepository userRepository, OrderRepository orderRepository) {
+        return args -> {
+            Arrays.asList("stark", "rogers").forEach(name -> userRepository.save(new User(name)));
+
+            User stark = userRepository.findByName("stark");
+            User rogers = userRepository.findByName("rogers");
+            orderRepository.save(new Order("2017011313591000001", stark.getId()));
+            orderRepository.save(new Order("2017011313591000002", rogers.getId()));
+        };
     }
 }
