@@ -191,6 +191,16 @@ This also explains the function of `spring.factories` in Spring Boot.
 ## H2 Embedded Memory Database
 If you add H2 database library into the classpath. Spring Boot will use H2 embedded database. And if you add spring-boot-devtools into the classpath, you can also use H2 web console. Open http://localhost:8080/h2-console, you can see it. By default, the jdbc url is `jdbc:h2:mem:testdb`. Username is sa, no password.
 
+## JPA
+When create a JPA entity, `@Table` is necessary
+
+```java
+@Table(name = "t_orders")
+@Entity
+public class Order {
+}
+```
+
 # Custom Banner
 http://www.network-science.de/ascii/
 
