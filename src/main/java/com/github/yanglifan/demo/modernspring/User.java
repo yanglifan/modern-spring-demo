@@ -1,10 +1,13 @@
 package com.github.yanglifan.demo.modernspring;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+@DynamicUpdate
 @Table(name = "t_users")
 @Entity
 public class User {
@@ -14,6 +17,8 @@ public class User {
     private Long id;
 
     private String name;
+
+    private int age;
 
     public User() {
     }
@@ -32,5 +37,13 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 }

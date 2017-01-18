@@ -21,7 +21,11 @@ public class ModernSpringDemoApplication {
     }
 
     @Bean
-    CommandLineRunner initDatabase(UserRepository userRepository, OrderRepository orderRepository) {
+    CommandLineRunner initDatabase(
+            UserRepository userRepository,
+            OrderRepository orderRepository,
+            DemoService demoService
+    ) {
         return args -> {
             Arrays.asList("stark", "rogers").forEach(name -> userRepository.save(new User(name)));
 
@@ -29,6 +33,8 @@ public class ModernSpringDemoApplication {
             User rogers = userRepository.findByName("rogers");
             orderRepository.save(new Order("2017011313591000001", stark.getId()));
             orderRepository.save(new Order("2017011313591000002", rogers.getId()));
+
+            demoService.saveForDemoHibernateDynamicUpdate();
         };
     }
 
