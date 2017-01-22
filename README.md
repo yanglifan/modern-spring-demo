@@ -207,6 +207,28 @@ When you write UT related with database operations, in general you will initiali
 # Custom Banner
 http://www.network-science.de/ascii/
 
+# Actuator
+Actuator is a very powerful production tools. With it, you can have functions like monitor, health check.
+
+Add the following snippet to enable it:
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+```
+
+After that, you will get a lot of system and application level information via following links:
+
+* [Health check](http://localhost:8080/health)
+* [Configuration and Environments](http://localhost:8080/env)
+* [URL Mappings](http://localhost:8080/mappings)
+* [Spring Beans](http://localhost:8080/beans)
+* [Metrics](http://localhost:8080/metrics): Memory, thread, classes, HTTP counters
+* [Thread Dump](http://localhost:8080/dump)
+* [Trace](http://localhost:8080/trace): Displays trace information (by default the last 100 HTTP requests).
+
 # References
 * [Spring Boot启动流程详解](http://zhaox.github.io/java/2016/03/22/spring-boot-start-flow)
 * [spring boot应用启动原理分析](http://blog.csdn.net/hengyunabc/article/details/50120001)
