@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -43,6 +45,17 @@ public class ModernSpringDemoApplication {
         return args -> {
             LOGGER.info("foo.enabled={}", fooProperties.isEnabled());
             LOGGER.info("foo.remoteAddress={}", fooProperties.getRemoteAddress());
+        };
+    }
+
+    @Bean
+    HealthIndicator helloWorldHealthIndicator() {
+        return () -> {
+            Health.Builder builder = new Health.Builder();
+            return builder
+                    .up()
+                    .withDetail("hello", "world")
+                    .build();
         };
     }
 

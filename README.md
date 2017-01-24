@@ -229,6 +229,39 @@ After that, you will get a lot of system and application level information via f
 * [Thread Dump](http://localhost:8080/dump)
 * [Trace](http://localhost:8080/trace): Displays trace information (by default the last 100 HTTP requests).
 
+## Custom Health Indicator
+You can provide a custom health indicator very easy:
+
+```java
+@org.springframework.context.annotation.Configuration
+class Application {
+    @Bean
+    HealthIndicator helloWorldHealthIndicator() {
+        return () -> {
+            Health.Builder builder = new Health.Builder();
+            return builder
+                    .up()
+                    .withDetail("hello", "world")
+                    .build();
+        };
+    }
+}
+```
+
+With this configuration, you will get the following response when you invoke the health check API:
+
+```json
+{
+    "status": "UP",
+    "helloWorld": {
+        "status": "UP",
+        "hello": "world"
+    }
+}
+```
+
+I believe you can find the relationship between Java code and JSON response.
+
 # References
 * [Spring Boot启动流程详解](http://zhaox.github.io/java/2016/03/22/spring-boot-start-flow)
 * [spring boot应用启动原理分析](http://blog.csdn.net/hengyunabc/article/details/50120001)
