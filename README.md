@@ -262,6 +262,16 @@ With this configuration, you will get the following response when you invoke the
 
 I believe you can find the relationship between Java code and JSON response.
 
+## Git commit id
+You can expose latest Git commit id in `/info` interface by adding `git-commit-id-plugin` maven plugin:
+
+```xml
+<plugin>
+    <groupId>pl.project13.maven</groupId>
+    <artifactId>git-commit-id-plugin</artifactId>
+</plugin>
+```
+
 # References
 * [Spring Boot启动流程详解](http://zhaox.github.io/java/2016/03/22/spring-boot-start-flow)
 * [spring boot应用启动原理分析](http://blog.csdn.net/hengyunabc/article/details/50120001)
