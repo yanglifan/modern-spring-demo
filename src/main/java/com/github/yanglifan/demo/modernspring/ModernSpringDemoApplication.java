@@ -9,6 +9,8 @@ import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Component;
 
 import java.net.InetAddress;
@@ -80,5 +82,11 @@ public class ModernSpringDemoApplication {
         public void setRemoteAddress(InetAddress remoteAddress) {
             this.remoteAddress = remoteAddress;
         }
+    }
+
+    @EnableScheduling
+    @Configuration
+    static class ScheduledConfig {
+
     }
 }
