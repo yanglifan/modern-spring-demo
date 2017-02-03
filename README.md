@@ -185,7 +185,7 @@ So `EmbeddedServletContainerAutoConfiguration` will be loaded. Then in `Applicat
 This also explains the function of `spring.factories` in Spring Boot. 
 
 # Web
-`@EnableWebMvc` is not necessary.
+Normally you would add @EnableWebMvc for a Spring MVC app, but Spring Boot adds it automatically when it sees spring-webmvc on the classpath.
 
 # Database
 ## H2 Embedded Memory Database
