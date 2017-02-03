@@ -20,6 +20,9 @@ public class User {
 
     private int age;
 
+    /**
+     * Default constructor is needed by Hibernate
+     */
     public User() {
     }
 
