@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Component;
 
@@ -25,11 +26,8 @@ public class ModernSpringDemoApplication {
     }
 
     @Bean
-    CommandLineRunner initDatabase(
-            UserRepository userRepository,
-            OrderRepository orderRepository,
-            DemoService demoService
-    ) {
+    CommandLineRunner initDatabase(UserRepository userRepository, OrderRepository orderRepository,
+                                   DemoService demoService, JdbcTemplate jdbcTemplate) {
         return args -> {
             Arrays.asList("stark", "rogers").forEach(name -> userRepository.save(new User(name)));
 
@@ -39,6 +37,10 @@ public class ModernSpringDemoApplication {
             orderRepository.save(new Order("2017011313591000002", rogers.getId()));
 
             demoService.saveForDemoHibernateDynamicUpdate();
+
+            jdbcTemplate.query("select name from t_users where name = ?", new Object[]{"stark"},
+                    (row, num) -> new User(row.getString("name")))
+                    .forEach(user -> LOGGER.info("Query with JdbcTemplate, User: {}", user.getName()));
         };
     }
 
