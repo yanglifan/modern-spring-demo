@@ -17,6 +17,6 @@ public class ScheduledTasks {
 
     @Scheduled(fixedDelay = 5000)
     public void reportCurrentTime() {
-        LOGGER.info("Current time is {}", DATE_FORMATTER.format(new Date()));
+        LOGGER.debug("Current time is {}", DATE_FORMATTER.format(new Date()));
     }
 }
