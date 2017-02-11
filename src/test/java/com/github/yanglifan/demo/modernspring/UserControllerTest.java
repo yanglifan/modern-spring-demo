@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class UserRestControllerTest {
+public class UserControllerTest {
     private static final String USERNAME = "yanglifan";
 
     @Autowired
