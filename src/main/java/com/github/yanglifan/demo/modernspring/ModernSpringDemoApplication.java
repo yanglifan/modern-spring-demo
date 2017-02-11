@@ -2,6 +2,7 @@ package com.github.yanglifan.demo.modernspring;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.health.Health;
@@ -12,6 +13,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.stereotype.Component;
 
 import java.net.InetAddress;
@@ -90,5 +95,28 @@ public class ModernSpringDemoApplication {
     @Configuration
     static class ScheduledConfig {
 
+    }
+
+    @Configuration
+    @EnableWebSecurity
+    public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            // @formatter:off
+            http
+                    .authorizeRequests()
+                        .antMatchers("/env").permitAll()
+                        .anyRequest().authenticated()
+                    .and()
+                        .httpBasic();
+            // @formatter:on
+        }
+
+        @Autowired
+        public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+            auth
+                    .inMemoryAuthentication()
+                    .withUser("admin").password("admin").roles("ADMIN");
+        }
     }
 }
