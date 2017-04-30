@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import javax.annotation.PostConstruct;
 
@@ -32,5 +33,17 @@ public class DemoService {
         User stark = userRepository.findByName("stark");
         stark.setAge(8);
         userRepository.save(stark);
+    }
+
+    @Transactional
+    public void saveUserWithException(String username, Exception ex) throws Exception {
+        Assert.notNull(ex);
+
+        User user = new User();
+        user.setName(username);
+        user.setAge(20);
+        userRepository.save(user);
+
+        throw ex;
     }
 }

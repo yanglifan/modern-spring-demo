@@ -18,6 +18,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
 import java.net.InetAddress;
 import java.util.Arrays;
@@ -46,8 +47,33 @@ public class ModernSpringDemoApplication {
             jdbcTemplate.query("select name from t_users where name = ?", new Object[]{"stark"},
                     (row, num) -> new User(row.getString("name")))
                     .forEach(user -> LOGGER.info("Query with JdbcTemplate, User: {}", user.getName()));
+
+            testRollbackException(demoService, userRepository);
         };
     }
+
+    private void testRollbackException(DemoService demoService, UserRepository userRepository) {
+        LOGGER.info("Demo Spring @Transactional will only handle RuntimeException");
+        String username = "testUser";
+        try {
+            demoService.saveUserWithException(username, new RuntimeException());
+        } catch (Exception e) {
+            Assert.isInstanceOf(RuntimeException.class, e);
+        }
+
+        User testUser = userRepository.findByName(username);
+        Assert.isNull(testUser);
+
+        try {
+            demoService.saveUserWithException(username, new Exception());
+        } catch (Exception e) {
+            Assert.isInstanceOf(Exception.class, e);
+        }
+
+        testUser = userRepository.findByName(username);
+        Assert.notNull(testUser);
+    }
+
 
     @Bean
     CommandLineRunner printProperties(FooProperties fooProperties) {
