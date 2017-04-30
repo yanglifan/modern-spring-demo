@@ -130,11 +130,11 @@ public class ModernSpringDemoApplication {
         protected void configure(HttpSecurity http) throws Exception {
             // @formatter:off
             http
-                    .authorizeRequests()
-                        .antMatchers("/env").permitAll()
-                        .anyRequest().authenticated()
-                    .and()
-                        .httpBasic();
+                .authorizeRequests()
+                    .antMatchers("/env").authenticated()
+//                  .anyRequest().authenticated()
+                .and()
+                    .httpBasic();
             // @formatter:on
         }
 
