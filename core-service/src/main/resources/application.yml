@@ -1,0 +1,11 @@
+zuul:
+  routes:
+    user:
+      path: /api/users/**
+      url: http://localhost:8080/users
+foo:
+  enabled: true
+  remote-address: 1.1.1.1
+spring:
+  jpa:
+    show-sql: true
