@@ -1,4 +1,4 @@
-package com.github.yanglifan.demo.modernspring;
+package com.github.yanglifan.workshop.spring;
 
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.slf4j.Logger;

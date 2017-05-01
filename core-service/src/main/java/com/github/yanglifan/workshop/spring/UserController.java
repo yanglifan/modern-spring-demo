@@ -1,4 +1,4 @@
-package com.github.yanglifan.demo.modernspring;
+package com.github.yanglifan.workshop.spring;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;

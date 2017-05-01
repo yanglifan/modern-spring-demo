@@ -1,4 +1,4 @@
-package com.github.yanglifan.demo.modernspring;
+package com.github.yanglifan.workshop.spring;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

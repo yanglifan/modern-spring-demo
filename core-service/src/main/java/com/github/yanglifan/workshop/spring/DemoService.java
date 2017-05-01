@@ -1,4 +1,4 @@
-package com.github.yanglifan.demo.modernspring;
+package com.github.yanglifan.workshop.spring;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

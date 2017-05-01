@@ -32,7 +32,7 @@ We know that the value of `Main-Class` segment will be the entry class when exec
 
 https://github.com/spring-projects/spring-boot/blob/master/spring-boot-tools/spring-boot-loader/src/main/java/org/springframework/boot/loader/JarLauncher.java
 
-`JarLauncher` just invokes the class which is specified by `Start-Class` in `MANIFEST.MF`. In this demo, `Start-Class` is `com.github.yanglifan.demo.modernspring.ModernSpringDemoApplication`. Like most of Spring Boot applications, in `main` method of `ModernSpringDemoApplication`, `SpringApplication.run(ModernSpringDemoApplication.class, args)` is invoked.
+`JarLauncher` just invokes the class which is specified by `Start-Class` in `MANIFEST.MF`. In this demo, `Start-Class` is `ModernSpringDemoApplication`. Like most of Spring Boot applications, in `main` method of `ModernSpringDemoApplication`, `SpringApplication.run(ModernSpringDemoApplication.class, args)` is invoked.
 
 ### The 1st important method of the class `SpringApplication`
 The first important method is `initialize(Object[] sources)`. This method is invoked by `SpringApplication` constructor.
