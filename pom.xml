@@ -6,10 +6,10 @@
 
     <groupId>com.github.yanglifan.workshop.spring</groupId>
     <artifactId>spring-workshop</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>modern-spring-demo</name>
+    <name>Spring Workshop Root</name>
     <description>Modern Spring Application Demo, based on Spring Boot</description>
 
     <parent>
