@@ -16,7 +16,6 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>1.5.3.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
     <properties>
@@ -27,7 +26,6 @@
 
     <modules>
         <module>core-service</module>
-        <module>gateway-service</module>
     </modules>
 
     <dependencyManagement>
