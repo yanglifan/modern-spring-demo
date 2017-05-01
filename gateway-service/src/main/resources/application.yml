@@ -1,8 +1,0 @@
-zuul:
-  routes:
-    user:
-      path: /users/**
-      url: http://localhost:8080/
-      stripPrefix: false
-server:
-  port: 8090
