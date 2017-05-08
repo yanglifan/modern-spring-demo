@@ -1,7 +1,8 @@
 package com.github.yanglifan.workshop.spring;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+@Api(value = "User APIs", description = "Operations of users")
 @RequestMapping("/users")
 @RestController
 public class UserController {
@@ -18,12 +20,13 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
+    @ApiOperation(value = "Get a user by name", response = User.class)
     @RequestMapping(value = "/{name}", method = RequestMethod.GET)
     public User getByName(@PathVariable String name) {
         return userRepository.findByName(name);
     }
 
-    @PostMapping
+    @RequestMapping(value = "/", method = RequestMethod.POST)
     public Boolean create(@RequestBody @Valid User user) {
         userRepository.save(user);
         return Boolean.TRUE;
