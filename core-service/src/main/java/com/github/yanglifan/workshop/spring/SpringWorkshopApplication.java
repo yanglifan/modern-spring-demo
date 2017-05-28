@@ -1,5 +1,6 @@
 package com.github.yanglifan.workshop.spring;
 
+import com.github.yanglifan.workshop.spring.async.AsyncHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,16 +25,18 @@ import java.net.InetAddress;
 import java.util.Arrays;
 
 @SpringBootApplication
-public class ModernSpringDemoApplication {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ModernSpringDemoApplication.class);
+public class SpringWorkshopApplication {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SpringWorkshopApplication.class);
+    @Autowired
+    private AsyncHttpClient asyncHttpClient;
 
     public static void main(String[] args) {
-        SpringApplication.run(ModernSpringDemoApplication.class, args);
+        SpringApplication.run(SpringWorkshopApplication.class, args);
     }
 
     @Bean
-    CommandLineRunner initDatabase(UserRepository userRepository, OrderRepository orderRepository,
-                                   DemoService demoService, JdbcTemplate jdbcTemplate) {
+    CommandLineRunner init(UserRepository userRepository, OrderRepository orderRepository,
+                           DemoService demoService, JdbcTemplate jdbcTemplate) {
         return args -> {
             Arrays.asList("stark", "rogers").forEach(name -> userRepository.save(new User(name)));
 
@@ -49,6 +52,8 @@ public class ModernSpringDemoApplication {
                     .forEach(user -> LOGGER.info("Query with JdbcTemplate, User: {}", user.getName()));
 
             testRollbackException(demoService, userRepository);
+
+            asyncHttpClient.getUserByUsername("stark");
         };
     }
 
@@ -130,10 +135,10 @@ public class ModernSpringDemoApplication {
         protected void configure(HttpSecurity http) throws Exception {
             // @formatter:off
             http
-                .authorizeRequests()
+                    .authorizeRequests()
                     .antMatchers("/env").authenticated()
 //                  .anyRequest().authenticated()
-                .and()
+                    .and()
                     .httpBasic();
             // @formatter:on
         }
