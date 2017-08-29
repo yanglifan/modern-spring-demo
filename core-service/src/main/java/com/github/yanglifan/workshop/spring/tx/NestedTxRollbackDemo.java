@@ -33,6 +33,7 @@ public class NestedTxRollbackDemo {
             LOGGER.error("Current transaction should be rollback");
         }
 
+        mainService.outTx();
         User user = userRepository.findByName(USERNAME);
         Assert.isNull(user, USERNAME + " should not be saved success");
     }
@@ -45,6 +46,10 @@ public class NestedTxRollbackDemo {
         @Autowired
         private ExceptionService exceptionService;
 
+        public MainService() {
+            System.out.println("demo");
+        }
+
         @Transactional
         public void demo() {
             try {
@@ -56,6 +61,16 @@ public class NestedTxRollbackDemo {
 
             Assert.isTrue(TransactionAspectSupport.currentTransactionStatus().isRollbackOnly(),
                     "Current transaction should be rollback");
+        }
+
+//        @Transactional
+        public void outTx() {
+            this.inTx();
+        }
+
+        @Transactional
+        public void inTx() {
+            System.out.println("inTX");
         }
     }
 
