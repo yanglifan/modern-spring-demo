@@ -2,6 +2,8 @@ package com.github.yanglifan.workshop.spring;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +16,8 @@ import javax.validation.Valid;
 @RequestMapping("/users")
 @RestController
 public class UserController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+
     private final UserRepository userRepository;
 
     public UserController(UserRepository userRepository) {
@@ -23,6 +27,7 @@ public class UserController {
     @ApiOperation(value = "Get a user by name", response = User.class)
     @RequestMapping(value = "/{name}", method = RequestMethod.GET)
     public User getByName(@PathVariable String name) {
+        LOGGER.info("Get a user by username {}", name);
         return userRepository.findByName(name);
     }
 

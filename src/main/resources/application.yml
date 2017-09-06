@@ -7,5 +7,10 @@ foo:
   enabled: true
   remote-address: 1.1.1.1
 spring:
+  application:
+    name: spring-workshop
   jpa:
     show-sql: true
+  sleuth:
+    sampler:
+      percentage: 1

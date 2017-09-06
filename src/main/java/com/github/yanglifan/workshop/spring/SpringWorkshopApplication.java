@@ -57,6 +57,25 @@ public class SpringWorkshopApplication {
         };
     }
 
+    @Bean
+    CommandLineRunner printProperties(FooProperties fooProperties) {
+        return args -> {
+            LOGGER.info("foo.enabled={}", fooProperties.isEnabled());
+            LOGGER.info("foo.remoteAddress={}", fooProperties.getRemoteAddress());
+        };
+    }
+
+    @Bean
+    HealthIndicator helloWorldHealthIndicator() {
+        return () -> {
+            Health.Builder builder = new Health.Builder();
+            return builder
+                    .up()
+                    .withDetail("hello", "world")
+                    .build();
+        };
+    }
+
     private void testRollbackException(DemoService demoService, UserRepository userRepository) {
         LOGGER.info("Demo Spring @Transactional will only handle RuntimeException");
         String username = "testUser";
@@ -77,26 +96,6 @@ public class SpringWorkshopApplication {
 
         testUser = userRepository.findByName(username);
         Assert.notNull(testUser);
-    }
-
-
-    @Bean
-    CommandLineRunner printProperties(FooProperties fooProperties) {
-        return args -> {
-            LOGGER.info("foo.enabled={}", fooProperties.isEnabled());
-            LOGGER.info("foo.remoteAddress={}", fooProperties.getRemoteAddress());
-        };
-    }
-
-    @Bean
-    HealthIndicator helloWorldHealthIndicator() {
-        return () -> {
-            Health.Builder builder = new Health.Builder();
-            return builder
-                    .up()
-                    .withDetail("hello", "world")
-                    .build();
-        };
     }
 
     @ConfigurationProperties("foo")
@@ -131,6 +130,13 @@ public class SpringWorkshopApplication {
     @Configuration
     @EnableWebSecurity
     public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+        @Autowired
+        public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+            auth
+                    .inMemoryAuthentication()
+                    .withUser("admin").password("admin").roles("ADMIN");
+        }
+
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             // @formatter:off
@@ -141,13 +147,6 @@ public class SpringWorkshopApplication {
                     .and()
                     .httpBasic();
             // @formatter:on
-        }
-
-        @Autowired
-        public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-            auth
-                    .inMemoryAuthentication()
-                    .withUser("admin").password("admin").roles("ADMIN");
         }
     }
 }
