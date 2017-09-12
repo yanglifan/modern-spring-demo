@@ -23,21 +23,33 @@ public class OrderController {
 
     private final OrderRepository orderRepository;
     private final PassportClient passportClient;
+    private final MessageService messageService;
 
-    public OrderController(OrderRepository orderRepository, PassportClient passportClient) {
+    public OrderController(
+            OrderRepository orderRepository,
+            PassportClient passportClient,
+            MessageService messageService) {
         this.orderRepository = orderRepository;
         this.passportClient = passportClient;
+        this.messageService = messageService;
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public Order create(@RequestBody PurchaseRequest purchaseRequest) {
+    public Order create(@RequestHeader("X-User-Token") String userToken, @RequestBody PurchaseRequest purchaseRequest) {
+        Boolean isValidUser = this.passportClient.isValidUser(userToken);
+        if (!isValidUser) {
+            throw new InvalidUserException();
+        }
+
         Order order = this.orderRepository.findOne(purchaseRequest.getOrderCode());
         if (order != null) {
             return order;
         }
 
-        order = new Order(purchaseRequest.getOrderCode(), purchaseRequest.getUserId());
+        order = Order.unpaid(purchaseRequest.getOrderCode(), purchaseRequest.getUserId());
         orderRepository.save(order);
+
+        messageService.sendMessage(order);
 
         return order;
     }

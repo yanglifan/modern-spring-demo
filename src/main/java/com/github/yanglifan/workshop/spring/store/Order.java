@@ -20,6 +20,10 @@ public class Order {
         this.userId = userId;
     }
 
+    public static Order unpaid(String code, Long userId) {
+        return new Order(code, userId);
+    }
+
     public String getCode() {
         return code;
     }
