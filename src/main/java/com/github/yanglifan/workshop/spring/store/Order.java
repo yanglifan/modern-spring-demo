@@ -1,4 +1,4 @@
-package com.github.yanglifan.workshop.spring;
+package com.github.yanglifan.workshop.spring.store;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

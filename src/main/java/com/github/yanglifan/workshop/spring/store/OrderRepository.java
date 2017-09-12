@@ -1,5 +1,6 @@
-package com.github.yanglifan.workshop.spring;
+package com.github.yanglifan.workshop.spring.store;
 
+import com.github.yanglifan.workshop.spring.store.Order;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,6 +1,7 @@
 package com.github.yanglifan.workshop.spring;
 
 import com.github.yanglifan.workshop.spring.async.AsyncHttpClient;
+import com.github.yanglifan.workshop.spring.store.OrderRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,13 +39,6 @@ public class SpringWorkshopApplication {
     CommandLineRunner init(UserRepository userRepository, OrderRepository orderRepository,
                            DemoService demoService, JdbcTemplate jdbcTemplate) {
         return args -> {
-            Arrays.asList("stark", "rogers").forEach(name -> userRepository.save(new User(name)));
-
-            User stark = userRepository.findByName("stark");
-            User rogers = userRepository.findByName("rogers");
-            orderRepository.save(new Order("2017011313591000001", stark.getId()));
-            orderRepository.save(new Order("2017011313591000002", rogers.getId()));
-
             demoService.saveForDemoHibernateDynamicUpdate();
 
             jdbcTemplate.query("select name from t_users where name = ?", new Object[]{"stark"},
@@ -139,8 +133,10 @@ public class SpringWorkshopApplication {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
+
             // @formatter:off
             http
+                    .csrf().disable()
                     .authorizeRequests()
                     .antMatchers("/env").authenticated()
 //                  .anyRequest().authenticated()
