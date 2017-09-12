@@ -36,6 +36,8 @@ public class OrderController {
 
     @RequestMapping(method = RequestMethod.POST)
     public Order create(@RequestHeader("X-User-Token") String userToken, @RequestBody PurchaseRequest purchaseRequest) {
+        LOGGER.info("Receive a purchase request {}", purchaseRequest);
+
         Boolean isValidUser = this.passportClient.isValidUser(userToken);
         if (!isValidUser) {
             throw new InvalidUserException();
