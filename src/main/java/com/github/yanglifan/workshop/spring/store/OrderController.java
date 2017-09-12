@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 /**
@@ -44,16 +45,24 @@ public class OrderController {
     @RequestMapping(value = "/{orderCode}", method = RequestMethod.GET)
     public Order query(
             @RequestHeader("X-User-Token") String userToken,
-            @PathVariable String orderCode) throws Exception {
-
-        Future<ResponseEntity<Boolean>> isValidFuture = passportClient.isValidUser(userToken);
-
-        Boolean isValid = isValidFuture.get().getBody();
+            @PathVariable String orderCode) throws ExecutionException, InterruptedException {
+        LOGGER.info("Query order by {}", orderCode);
+        Boolean isValid = isValidUser(userToken);
 
         if (!isValid) {
             throw new InvalidUserException();
         }
 
         return orderRepository.findOne(orderCode);
+    }
+
+    private Boolean isValidUser(String userToken) {
+        return passportClient.isValidUser(userToken);
+    }
+
+    private Boolean isValidUserAsync(String userToken) throws InterruptedException, ExecutionException {
+        Future<ResponseEntity<Boolean>> isValidFuture = passportClient.isValidUserAsync(userToken);
+
+        return isValidFuture.get().getBody();
     }
 }

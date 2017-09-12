@@ -11,6 +11,8 @@ import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.sleuth.Tracer;
+import org.springframework.cloud.sleuth.instrument.web.client.TraceAsyncRestTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,9 +23,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
+import org.springframework.web.client.AsyncRestTemplate;
+import org.springframework.web.client.RestTemplate;
 
 import java.net.InetAddress;
-import java.util.Arrays;
 
 @SpringBootApplication
 public class SpringWorkshopApplication {
@@ -33,6 +36,19 @@ public class SpringWorkshopApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(SpringWorkshopApplication.class, args);
+    }
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+
+    /**
+     * If you want to make calls via AsyncRestTemplate can be traced, you have to use TraceAsyncRestTemplate
+     */
+    @Bean
+    public AsyncRestTemplate asyncRestTemplate(Tracer tracer) {
+        return new TraceAsyncRestTemplate(tracer);
     }
 
     @Bean

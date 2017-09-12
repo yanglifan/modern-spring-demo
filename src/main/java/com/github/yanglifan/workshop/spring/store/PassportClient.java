@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 import org.springframework.web.client.AsyncRestTemplate;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * @author Yang Lifan
@@ -18,14 +19,21 @@ public class PassportClient {
     private static final String PASSPORT_SERVICE_HOST = "http://localhost:8080/passport-service/";
     private static final String IS_INVALID_USER_URL = PASSPORT_SERVICE_HOST + "is-invalid-user?userToken={userToken}";
 
-    private AsyncRestTemplate asyncRestTemplate = new AsyncRestTemplate();
+    private final AsyncRestTemplate asyncRestTemplate;
+    private final RestTemplate restTemplate;
 
-    public ListenableFuture<ResponseEntity<Boolean>> isValidUser(String userToken) {
-        ListenableFuture<ResponseEntity<Boolean>> responseFuture = asyncRestTemplate.getForEntity(IS_INVALID_USER_URL, Boolean.class, userToken);
+    public PassportClient(AsyncRestTemplate asyncRestTemplate, RestTemplate restTemplate) {
+        this.asyncRestTemplate = asyncRestTemplate;
+        this.restTemplate = restTemplate;
+    }
+
+    public ListenableFuture<ResponseEntity<Boolean>> isValidUserAsync(String userToken) {
+        ListenableFuture<ResponseEntity<Boolean>> responseFuture =
+                asyncRestTemplate.getForEntity(IS_INVALID_USER_URL, Boolean.class, userToken);
         responseFuture.addCallback(new ListenableFutureCallback<ResponseEntity<Boolean>>() {
             @Override
             public void onFailure(Throwable ex) {
-                LOGGER.error("Query the user status by token {} failed", userToken, ex);
+                LOGGER.error("Async query the user status by token {} failed", userToken, ex);
             }
 
             @Override
@@ -38,5 +46,10 @@ public class PassportClient {
             }
         });
         return responseFuture;
+    }
+
+    public Boolean isValidUser(String userToken) {
+        LOGGER.info("Query the user status by the token {}", userToken);
+        return restTemplate.getForObject(IS_INVALID_USER_URL, Boolean.class, userToken);
     }
 }
