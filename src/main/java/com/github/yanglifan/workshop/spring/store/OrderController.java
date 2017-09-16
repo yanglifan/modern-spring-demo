@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -43,12 +44,12 @@ public class OrderController {
             throw new InvalidUserException();
         }
 
-        Order order = this.orderRepository.findOne(purchaseRequest.getOrderCode());
-        if (order != null) {
-            return order;
+        Optional<Order> orderOptional = this.orderRepository.findById(purchaseRequest.getOrderCode());
+        if (orderOptional.isPresent()) {
+            return orderOptional.get();
         }
 
-        order = Order.unpaid(purchaseRequest.getOrderCode(), purchaseRequest.getUserId());
+        Order order = Order.unpaid(purchaseRequest.getOrderCode(), purchaseRequest.getUserId());
         orderRepository.save(order);
 
         messageService.sendMessage(order);
@@ -67,7 +68,7 @@ public class OrderController {
             throw new InvalidUserException();
         }
 
-        return orderRepository.findOne(orderCode);
+        return orderRepository.findById(orderCode).get();
     }
 
     private Boolean isValidUser(String userToken) {
