@@ -14,3 +14,5 @@ spring:
   sleuth:
     sampler:
       percentage: 1
+  zipkin:
+    enabled: false
