@@ -18,6 +18,7 @@ public class NestedTxRollbackDemo {
     private static final Logger LOGGER = LoggerFactory.getLogger(NestedTxRollbackDemo.class);
 
     private static final String USERNAME = "userForTxDemo";
+    private static final String USERNAME2 = "userForTxDemo2";
 
     @Autowired
     private MainService mainService;
@@ -30,21 +31,27 @@ public class NestedTxRollbackDemo {
         try {
             mainService.demo();
         } catch (Exception e) {
-            LOGGER.error("Current transaction should be rollback");
+            LOGGER.error("Current tx should be rollback");
         }
 
         mainService.outTx();
         User user = userRepository.findByName(USERNAME);
         Assert.isNull(user, USERNAME + " should not be saved success");
+
+        try {
+            mainService.demo2();
+        } catch (Exception e) {
+            LOGGER.error("Current tx should not be rollback");
+        }
+
+        User user2 = userRepository.findByName(USERNAME2);
+        Assert.notNull(user2, USERNAME2 + " should be saved success");
     }
 
     @Component
     public static class MainService {
         @Autowired
         private UserRepository userRepository;
-
-        @Autowired
-        private ExceptionService exceptionService;
 
         public MainService() {
             System.out.println("demo");
@@ -54,16 +61,20 @@ public class NestedTxRollbackDemo {
         public void demo() {
             try {
                 this.userRepository.save(new User(USERNAME));
-                exceptionService.withException();
+                throw new Exception("test");
             } catch (Exception e) {
                 LOGGER.error("Expected an exception");
+                Assert.isTrue(TransactionAspectSupport.currentTransactionStatus().isRollbackOnly(),
+                        "Current transaction should be rollback");
             }
-
-            Assert.isTrue(TransactionAspectSupport.currentTransactionStatus().isRollbackOnly(),
-                    "Current transaction should be rollback");
         }
 
-//        @Transactional
+        @Transactional
+        public void demo2() throws Exception {
+            this.userRepository.save(new User(USERNAME2));
+            throw new Exception("test");
+        }
+
         public void outTx() {
             this.inTx();
         }
