@@ -16,3 +16,7 @@ spring:
       percentage: 1
   zipkin:
     enabled: false
+  datasource:
+    url: jdbc:mysql://bj.bosstest.w.qiyi.db:6183/huiyuan_order
+    username: bosstest
+    password: bosstest

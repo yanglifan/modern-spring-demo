@@ -28,7 +28,7 @@ public class UserControllerTest {
     @Rule
     public JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation("target/generated-snippets");
 
-    private static final String USERNAME = "yanglifan";
+    private static final String USERNAME = "src/test/java/yanglifan";
 
     @Autowired
     private MockMvc mockMvc;
