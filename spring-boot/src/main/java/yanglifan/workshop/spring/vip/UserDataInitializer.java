@@ -19,7 +19,7 @@ public class UserDataInitializer implements InitializingBean {
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         Arrays.asList("stark", "rogers").forEach(name -> userRepository.save(new User(name)));
     }
 }

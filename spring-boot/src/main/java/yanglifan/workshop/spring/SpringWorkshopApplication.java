@@ -28,6 +28,7 @@ import java.net.InetAddress;
 @SpringBootApplication
 public class SpringWorkshopApplication {
     private static final Logger LOGGER = LoggerFactory.getLogger(SpringWorkshopApplication.class);
+
     @Autowired
     private AsyncHttpClient asyncHttpClient;
 

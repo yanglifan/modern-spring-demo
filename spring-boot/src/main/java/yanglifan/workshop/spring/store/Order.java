@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Table(name = "qiyue_order")
+@Table(name = "t_orders")
 @Entity
 public class Order {
     @Id
@@ -12,7 +12,8 @@ public class Order {
 
     private Long userId;
 
-    private Order() {
+    public Order() {
+
     }
 
     public Order(String code, Long userId) {
