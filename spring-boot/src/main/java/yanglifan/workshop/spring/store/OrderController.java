@@ -74,10 +74,4 @@ public class OrderController {
     private Boolean isValidUser(String userToken) {
         return passportClient.isValidUser(userToken);
     }
-
-    private Boolean isValidUserAsync(String userToken) throws InterruptedException, ExecutionException {
-        Future<ResponseEntity<Boolean>> isValidFuture = passportClient.isValidUserAsync(userToken);
-
-        return isValidFuture.get().getBody();
-    }
 }
