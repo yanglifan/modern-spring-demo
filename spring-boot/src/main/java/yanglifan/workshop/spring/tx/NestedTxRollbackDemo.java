@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.Assert;
-import yanglifan.workshop.spring.GroovyDemoService;
 import yanglifan.workshop.spring.User;
 import yanglifan.workshop.spring.UserRepository;
 
@@ -64,9 +63,6 @@ public class NestedTxRollbackDemo {
         @Autowired
         private UserRepository userRepository;
 
-        @Autowired
-        private GroovyDemoService groovyDemoService;
-
         public MainService() {
             System.out.println("demo");
         }
@@ -90,9 +86,8 @@ public class NestedTxRollbackDemo {
         }
 
         @Transactional
-        public void demoGroovy() throws Exception {
+        public void demoGroovy() {
             this.userRepository.save(new User(USERNAME3));
-            groovyDemoService.withException();
         }
 
         public void outTx() {
