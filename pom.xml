@@ -18,6 +18,7 @@
     <modules>
         <module>spring-boot</module>
         <module>spring-reactor</module>
+        <module>kotlin</module>
     </modules>
 
     <name>Spring Workshop Root</name>
